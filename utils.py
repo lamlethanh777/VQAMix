@@ -15,10 +15,12 @@ from PIL import Image
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch._six import string_classes
 from torch.utils.data.dataloader import default_collate
 import math
 import time
+
+# For Python 3 compatibility (torch._six was removed)
+string_classes = str
 
 import dataset_RAD
 

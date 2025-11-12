@@ -7,7 +7,7 @@ https://github.com/zcyang/imageqa-san
 """
 import torch
 import torch.nn as nn
-from torch.nn.utils.weight_norm import weight_norm
+from torch.nn.utils.parametrizations import weight_norm
 from bc import BCNet
 
 # Bilinear Attention

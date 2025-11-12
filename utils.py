@@ -7,7 +7,7 @@ from __future__ import print_function
 import errno
 import os
 import re
-import collections
+import collections.abc
 import numpy as np
 import operator
 import functools
@@ -158,9 +158,9 @@ def trim_collate(batch):
         return torch.DoubleTensor(batch)
     elif isinstance(batch[0], string_classes):
         return batch
-    elif isinstance(batch[0], collections.Mapping):
+    elif isinstance(batch[0], collections.abc.Mapping):
         return {key: default_collate([d[key] for d in batch]) for key in batch[0]}
-    elif isinstance(batch[0], collections.Sequence):
+    elif isinstance(batch[0], collections.abc.Sequence):
         transposed = zip(*batch)
         return [trim_collate(samples) for samples in transposed]
 

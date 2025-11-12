@@ -121,25 +121,12 @@ def trim_collate(batch):
     error_msg = "batch must contain tensors, numbers, dicts or lists; found {}"
     elem_type = type(batch[0])
     if torch.is_tensor(batch[0]):
-        out = None
         if 1 < batch[0].dim(): # image features
             max_num_boxes = max([x.size(0) for x in batch])
-            if _use_shared_memory:
-                # If we're in a background process, concatenate directly into a
-                # shared memory tensor to avoid an extra copy
-                numel = len(batch) * max_num_boxes * batch[0].size(-1)
-                storage = batch[0].storage()._new_shared(numel)
-                out = batch[0].new(storage)
             # warning: F.pad returns Variable!
-            return torch.stack([F.pad(x, (0,0,0,max_num_boxes-x.size(0))).data for x in batch], 0, out=out)
+            return torch.stack([F.pad(x, (0,0,0,max_num_boxes-x.size(0))).data for x in batch], 0)
         else:
-            if _use_shared_memory:
-                # If we're in a background process, concatenate directly into a
-                # shared memory tensor to avoid an extra copy
-                numel = sum([x.numel() for x in batch])
-                storage = batch[0].storage()._new_shared(numel)
-                out = batch[0].new(storage)
-            return torch.stack(batch, 0, out=out)
+            return torch.stack(batch, 0)
     elif elem_type.__module__ == 'numpy' and elem_type.__name__ != 'str_' \
             and elem_type.__name__ != 'string_':
         elem = batch[0]

@@ -256,7 +256,7 @@ def tfidf_loading(use_tfidf, w_emb, args):
             if os.path.isfile(os.path.join(args.RAD_dir, 'embed_tfidf_weights.pkl')) == True:
                 print("Loading embedding tfidf and weights from file")
                 with open(os.path.join(args.RAD_dir ,'embed_tfidf_weights.pkl'), 'rb') as f:
-                    w_emb = torch.load(f)
+                    w_emb = torch.load(f, weights_only=False)
                 print("Load embedding tfidf and weights from file successfully")
             else:
                 print("Embedding tfidf and weights haven't been saving before")
